@@ -3,7 +3,7 @@
 ## École Nationale de Commerce et de Gestion (ENCG) \- 4ème Année
 <img src="encg settat.jpeg" style="height:264px;margin-right:264px"/>
 ---
-
+<img src="[encg settat.jpeg](https://github.com/elfadilisafae0972encg-dot/DS/blob/main/safae%20el%20fadili_photo.jpg)" style="height:264px;margin-right:264px"/>
 # PARTIE 1 : FONDAMENTAUX DE LA SCIENCE DES DONNÉES
 
 ---
