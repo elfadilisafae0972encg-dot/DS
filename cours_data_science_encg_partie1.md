@@ -1,7 +1,7 @@
 # COURS DE SCIENCE DES DONNÉES
 
 ## École Nationale de Commerce et de Gestion (ENCG) \- 4ème Année
-<img src="encg settat.jpeg" style="height:464px;margin-right:432px"/>encg settat.jpeg
+<img src="encg settat.jpeg" style="height:264px;margin-right:264px"/>encg settat.jpeg
 ---
 
 # PARTIE 1 : FONDAMENTAUX DE LA SCIENCE DES DONNÉES
