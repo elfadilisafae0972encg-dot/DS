@@ -27,7 +27,7 @@
 
 
 
-                      ## Analyse du Marché de l'Emploi de l'IA et Prédiction des Salaires
+## Analyse du Marché de l'Emploi de l'IA et Prédiction des Salaires
 ## Table des Matières
 Introduction du Projet
 Analyse Exploratoire des Données (EDA)
@@ -45,91 +45,206 @@ Comparaison Finale des Modèles et Conclusion Générale
 ## Introduction du Projet
 Le jeu de données "AI-Powered Job Market Insights" offre un aperçu synthétique mais réaliste du marché du travail moderne, en se concentrant particulièrement sur le rôle de l'intelligence artificielle (IA) et de l'automatisation dans diverses industries. Ce jeu de données comprend 500 annonces d'emploi uniques, chacune caractérisée par différents facteurs tels que l'industrie, la taille de l'entreprise, le niveau d'adoption de l'IA, le risque d'automatisation, les compétences requises et les projections de croissance de l'emploi.
 Il est conçu pour être une ressource précieuse pour les chercheurs, les data scientists et les décideurs politiques qui explorent l'impact de l'IA sur l'emploi, les tendances du marché du travail et l'avenir du travail.
+# Analyse du Marché de l'Emploi en IA et Prédiction des Salaires
 
-## Analyse Exploratoire des Données (EDA)
+## Description du Jeu de Données
 
-L'Analyse Exploratoire des Données (EDA) est une étape cruciale pour comprendre la structure, les modèles, les valeurs aberrantes et les relations au sein de notre jeu de données. L'objectif principal de cette section est d'explorer la distribution de notre variable cible, `Salary_USD`, et d'identifier les relations potentielles entre le salaire et les différentes caractéristiques indépendantes.
+Le jeu de données contient des informations sur divers aspects du marché du travail, notamment:
 
-Nous allons utiliser plusieurs visualisations pour atteindre cet objectif :
-1.  Un histogramme pour visualiser la distribution globale de `Salary_USD`, nous permettant de comprendre sa forme, sa tendance centrale et sa dispersion.
-2.  Des box plots pour examiner la distribution de `Salary_USD` en fonction de chaque variable catégorielle encodée (`Job_Title`, `Industry`, `Company_Size`, `Location`, `AI_Adoption_Level`, `Automation_Risk`, `Required_Skills`, `Remote_Friendly`, et `Job_Growth_Projection`). Ces visualisations nous aideront à identifier comment le salaire varie en fonction des différentes catégories de chaque caractéristique, et à détecter d'éventuelles différences significatives ou tendances.
+*   **Job_Title**: Le titre du poste.
+*   **Industry**: L'industrie à laquelle le poste appartient.
+*   **Company_Size**: La taille de l'entreprise (petite, moyenne, grande).
+*   **Location**: La localisation géographique du poste.
+*   **AI_Adoption_Level**: Le niveau d'adoption de l'IA par l'entreprise.
+*   **Automation_Risk**: Le risque d'automatisation du poste.
+*   **Required_Skills**: Les compétences requises pour le poste.
+*   **Salary_USD**: Le salaire annuel en dollars américains (variable cible).
+*   **Remote_Friendly**: Indique si le poste est télétravaillable.
+*   **Job_Growth_Projection**: La projection de croissance de l'emploi pour ce rôle.
 
-### Distribution de Salary_USD
+## Objectif de l'Analyse
 
-Cet histogramme illustre la distribution de la variable cible `Salary_USD`. La ligne `kde` (Kernel Density Estimate) fournit une représentation lissée de la distribution, aidant à identifier sa forme, sa tendance centrale et sa dispersion. Nous pouvons observer la plage des salaires et où se situe la majorité des salaires au sein de l'ensemble de données. Généralement, la distribution semble suivre une forme quasi-normale, légèrement asymétrique, avec la plupart des salaires regroupés autour de la moyenne, et une diminution de la fréquence à mesure que l'on s'éloigne de cette moyenne. Cela nous donne une première idée de la répartition des salaires dans le marché de l'emploi analysé.
+L'objectif principal de cette analyse est de:
 
-### Analyse des Relations entre les Variables Indépendantes et Salary_USD
+1.  Comprendre les relations entre les différentes caractéristiques du marché de l'emploi (titre du poste, industrie, taille de l'entreprise, etc.) et le `Salary_USD`.
+2.  Construire et évaluer différents modèles de régression pour prédire le `Salary_USD` en fonction de ces caractéristiques.
 
-Ces box plots illustrent la relation entre chaque caractéristique indépendante encodée et la variable cible `Salary_USD`. Chaque box plot représente la médiane, les quartiles et les valeurs aberrantes potentielles de `Salary_USD` pour chaque catégorie de la caractéristique indépendante.
+## Méthodologie
 
-En examinant ces graphiques, nous pouvons tirer les observations suivantes :
+La méthodologie adoptée pour cette analyse comprend les étapes suivantes:
 
-*   **Job_Title** : Les salaires varient considérablement selon les différentes catégories de `Job_Title`. Certains titres de poste (représentés par leurs codes encodés) montrent des médianes salariales plus élevées et une plus grande dispersion, tandis que d'autres ont des salaires plus concentrés ou plus faibles. Cela suggère que le type de poste est un facteur important influençant le salaire.
+1.  **Chargement et Inspection des Données**: Lecture du jeu de données et examen initial de sa structure et de ses premières lignes.
+2.  **Prétraitement des Données**: Identification et gestion des valeurs manquantes, des doublons, et encodage des caractéristiques catégorielles en valeurs numériques pour les rendre utilisables par les modèles.
+3.  **Analyse Exploratoire des Données (EDA)**: Visualisation des distributions des variables clés et de leurs relations, y compris la distribution du `Salary_USD` et ses relations avec les autres caractéristiques.
+4.  **Analyse de Corrélation**: Calcul et visualisation de la matrice de corrélation pour identifier les relations linéaires entre les variables.
+5.  **Modélisation Prédictive**: Entraînement et évaluation de plusieurs modèles de régression:
+    *   Régression Linéaire Simple
+    *   Régression Polynomiale
+    *   Régression Ridge
+    *   Régression par Arbre de Décision
+6.  **Évaluation des Modèles**: Comparaison des performances des modèles à l'aide de métriques telles que le Mean Squared Error (MSE) et le coefficient R-squared, ainsi que des visualisations des prédictions par rapport aux valeurs réelles.
+7.  **Conclusion et Recommandations**: Synthèse des résultats et suggestions pour d'éventuelles améliorations futures.
 
-*   **Industry** : La distribution des salaires diffère également d'une `Industry` à l'autre. Certaines industries peuvent offrir des salaires médians plus élevés ou une gamme de salaires plus large que d'autres. L'encodage numérique permet de comparer les tendances générales, même si les étiquettes originales ne sont pas immédiatement visibles.
+## Chargement et Préparation des Données
+### Chargement des Données
 
-*   **Company_Size** : Les box plots pour `Company_Size` indiquent si la taille de l'entreprise (petite, moyenne, grande, encodée) a un impact sur le niveau de salaire. On peut observer si les grandes entreprises, par exemple, ont tendance à payer plus, ou si la dispersion des salaires est différente.
+Cette étape consiste à charger le jeu de données `ai_job_market_insights.csv` dans un DataFrame Pandas. Nous affichons ensuite les premières lignes du DataFrame pour avoir un aperçu des données et de leur structure.
+### Encodage des Variables Catégorielles
 
-*   **Location** : La `Location` géographique (encodée) est un facteur classique d'influence sur les salaires. Les graphiques révèlent si certaines localisations ont des salaires médians nettement supérieurs ou inférieurs, reflétant potentiellement le coût de la vie ou la demande locale pour certains postes.
+Pour préparer les données pour les modèles de machine learning, nous convertissons toutes les variables catégorielles (de type 'object') en représentations numériques. Nous utilisons `LabelEncoder` de `sklearn.preprocessing` pour attribuer un identifiant unique à chaque catégorie dans une colonne donnée. Ceci est appliqué à des colonnes comme `Job_Title`, `Industry`, `Company_Size`, etc., afin que les modèles puissent les interpréter comme des caractéristiques numériques.
 
-*   **AI_Adoption_Level** : L'impact du `AI_Adoption_Level` sur les salaires est également visualisé. Il est intéressant de voir si un niveau d'adoption de l'IA plus élevé (encodé) correspond à des salaires supérieurs, ce qui pourrait indiquer une valorisation des compétences liées à l'IA.
+## Préparation des Données pour la Modélisation
+### Préparation des Données pour la Modélisation
 
-*   **Automation_Risk** : Ces graphiques montrent comment les salaires se distribuent en fonction du `Automation_Risk`. On pourrait s'attendre à des salaires plus élevés pour les postes à faible risque d'automatisation, ou des différences de dispersion.
+Pour préparer nos données à la modélisation, nous devons les diviser en ensembles d'entraînement et de test. Cette étape est cruciale pour évaluer la performance du modèle sur des données non vues et éviter le surapprentissage.
 
-*   **Required_Skills** : La variable `Required_Skills` (encodée) peut également montrer des variations salariales. Des compétences rares ou très demandées pourraient être associées à des salaires plus élevés.
+*   **Ensemble d'entraînement (80%)** : Utilisé pour entraîner le modèle. Le modèle apprendra les relations entre les caractéristiques et la variable cible à partir de cet ensemble.
+*   **Ensemble de test (20%)** : Utilisé pour évaluer la performance du modèle après son entraînement. Ces données n'ont jamais été vues par le modèle pendant l'entraînement.
 
-*   **Remote_Friendly** : La flexibilité du travail (`Remote_Friendly`) peut aussi influencer les salaires. Les box plots permettent d'analyser si les postes télétravaillables (encodés) ont des distributions salariales différentes de ceux qui ne le sont pas.
+Nous utiliserons la fonction `train_test_split` de `sklearn.model_selection` pour effectuer cette division.
 
-*   **Job_Growth_Projection** : Enfin, la `Job_Growth_Projection` (encodée) peut être liée aux salaires. Les secteurs ou postes avec une forte projection de croissance peuvent parfois offrir des salaires plus compétitifs.
+*   **Variable Indépendante (X)** : Pour l'analyse initiale, nous allons sélectionner `'Job_Title'` comme notre seule variable indépendante. `X` sera donc un DataFrame contenant uniquement cette colonne.
+*   **Variable Dépendante (y)** : La variable cible que nous voulons prédire est `'Salary_USD'`. `y` sera donc une Series contenant les salaires.
 
-En examinant l'ensemble de ces visualisations, nous pouvons identifier quelles caractéristiques semblent avoir une influence plus prononcée sur les salaires, même si les variables sont encodées. Cependant, des différences subtiles peuvent être difficiles à interpréter sans les mappings des valeurs encodées aux catégories originales.
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
+Le paramètre `random_state` est défini pour assurer la reproductibilité de la division des données. Cela signifie que chaque fois que le code est exécuté avec le même `random_state`, la division sera identique.
 
-# Calculate the correlation matrix
-correlation_matrix = df.corr(numeric_only=True)
+## Comparaison Finale des Modèles et Conclusion Générale
+print(performance_df)
+                      Model           MSE  R-squared
+0         Linear Regression  4.903960e+08   0.051901
+1     Polynomial Regression  4.931466e+08   0.046583
+2          Ridge Regression  4.904278e+08   0.051839
+3  Decision Tree Regression  8.689208e+08  -0.679914
 
-# Display the correlation matrix
-print("Matrice de Corrélation:")
-print(correlation_matrix)
-plt.figure(figsize=(12, 10))
-sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f", linewidths=.5)
-plt.title('Matrice de Corrélation des Variables')
-plt.show()
-### Analyse des Corrélations
+### Analyse Détaillée et Recommandations
 
-La carte de chaleur de la matrice de corrélation révèle les relations linéaires entre toutes les variables du jeu de données, y compris la variable cible `Salary_USD`.
+Le tableau comparatif ci-dessus présente les métriques d'évaluation (MSE et R-carré) pour les quatre modèles de régression que nous avons entraînés : Régression Linéaire Simple, Régression Polynomiale, Régression Ridge et Régression par Arbre de Décision.
 
 **Observations Clés :**
 
-1.  **Corrélations avec `Salary_USD` :**
-    *   **Automation_Risk** : Il existe une faible corrélation négative (-0.12) avec `Salary_USD`. Cela pourrait suggérer que les postes présentant un risque d'automatisation plus élevé ont tendance à avoir des salaires légèrement inférieurs, ou vice-versa. Cependant, la force de cette corrélation est très faible, ce qui signifie que l'impact est marginal.
-    *   **Industry** : On observe une faible corrélation négative (-0.10) avec `Salary_USD`. Ceci pourrait indiquer que certaines industries (après encodage numérique) paient légèrement moins que d'autres, mais là encore, l'effet est très limité.
-    *   **AI_Adoption_Level** : Il y a une très faible corrélation positive (0.08) avec `Salary_USD`. Cela pourrait insinuer que les salaires sont marginalement plus élevés dans les entreprises avec un niveau d'adoption de l'IA plus important, mais la corrélation est trop faible pour tirer des conclusions significatives.
-    *   **Required_Skills** : Une corrélation positive très faible (0.04) est présente, ce qui suggère une influence presque négligeable des compétences requises (après encodage) sur le salaire.
-    *   Les autres variables (`Job_Title`, `Company_Size`, `Location`, `Remote_Friendly`, `Job_Growth_Projection`) montrent des corrélations avec `Salary_USD` qui sont très proches de zéro, indiquant qu'elles ont très peu ou pas de relation linéaire directe avec le salaire dans ce jeu de données tel qu'encodé.
+1.  **Performances Générales Très Faibles** :
+    *   Les modèles de régression linéaire (simple, polynomiale, Ridge) affichent des valeurs de **R-carré extrêmement faibles, autour de 0.05**. Cela signifie que seulement **environ 5% de la variance du `Salary_USD` est expliquée** par les caractéristiques que nous avons utilisées dans ces modèles. C'est un indicateur clair que ces modèles ne sont pas du tout performants pour prédire les salaires avec ce jeu de données et ces caractéristiques.
+    *   Le **MSE** pour ces trois modèles est très élevé (autour de 4.90e+08), confirmant que les prédictions sont très éloignées des valeurs réelles.
 
-2.  **Corrélations entre Variables Indépendantes :**
-    *   La plupart des corrélations entre les variables indépendantes sont également très faibles, proches de zéro. Cela est généralement une bonne chose pour les modèles de régression linéaire, car cela signifie qu'il n'y a pas de forte multicolinéarité entre les prédicteurs.
-    *   Aucune corrélation particulièrement forte (positive ou négative) n'est observable entre les différentes caractéristiques, ce qui indique que les variables indépendantes sont relativement indépendantes les unes des autres.
+2.  **Performance de la Régression par Arbre de Décision** :
+    *   Le modèle de Régression par Arbre de Décision a montré une performance encore pire, avec un **R-carré négatif de -0.68** et un **MSE beaucoup plus élevé (8.69e+08)**. Un R-carré négatif est un signal fort que le modèle est une très mauvaise approximation des données, même pire que de simplement prédire la moyenne de la variable cible. Cela suggère un **sous-apprentissage** sévère ou l'incapacité du modèle à trouver des schémas significatifs dans les données.
 
-**Implications :**
+3.  **Absence de Modèle "Performant"** : Aucun des modèles testés ne peut être qualifié de "performant" dans ce contexte. Les performances sont uniformément basses, voire très négatives pour l'arbre de décision. Les différences marginales entre la régression linéaire simple, polynomiale et Ridge ne sont pas significatives étant donné la faiblesse globale des R-carrés.
 
-Les faibles valeurs de corrélation observées entre les variables indépendantes et `Salary_USD` sont cohérentes avec les résultats des modèles de régression linéaire précédents (linéaire simple, polynomiale et Ridge). Un R-carré très faible pour tous ces modèles suggérait déjà que les caractéristiques actuelles n'expliquent qu'une très petite partie de la variance du salaire. La matrice de corrélation confirme que peu de ces caractéristiques, si tant est qu'il y en ait, ont une relation linéaire significative avec le salaire.
+**Conclusion Générale :**
 
-Cela renforce la conclusion que des efforts sont nécessaires en matière d'ingénierie des caractéristiques ou que des données supplémentaires/plus riches sont requises pour construire un modèle de prédiction de salaire plus performant. Il est également possible que la relation entre ces variables et le salaire ne soit pas linéaire et ne soit donc pas capturée par cette analyse de corrélation de Pearson.
-## Préparation des Données pour la Modélisation
+L'analyse prédictive révèle que les caractéristiques actuelles du jeu de données ne sont pas suffisamment informatives pour prédire efficacement le `Salary_USD` en utilisant des modèles de régression de base ou un arbre de décision simple. Les modèles ne parviennent pas à capturer la complexité des facteurs influençant le salaire.
 
-Pour préparer les données à la modélisation, nous avons suivi les étapes suivantes :
+**Recommandations pour les Étapes Futures :**
 
-1.  **Sélection des Variables :**
-    *   Nous avons identifié la variable cible (dépendante) comme `'Salary_USD'`, car c'est ce que nous souhaitons prédire. Cette variable sera représentée par `y`.
-    *   Toutes les autres colonnes du DataFrame `df`, à l'exception de `'Salary_USD'`, sont considérées comme des variables indépendantes (prédicteurs). Ces variables seront représentées par `X`. Il est important de noter que toutes ces variables ont déjà été encodées numériquement lors des étapes précédentes.
+Pour améliorer la capacité prédictive, les étapes suivantes sont cruciales :
 
-2.  **Division en Ensembles d'Entraînement et de Test :**
-    *   Afin d'évaluer la performance de nos modèles sur des données non vues, nous avons divisé l'ensemble de données en deux sous-ensembles : un ensemble d'entraînement (`X_train`, `y_train`) et un ensemble de test (`X_test`, `y_test`).
-    *   La fonction `train_test_split` de `sklearn.model_selection` a été utilisée pour effectuer cette division.
-    *   Nous avons alloué **80%** des données pour l'entraînement (`train_size=0.8` ou `test_size=0.2`) et **20%** pour le test.
-    *   Un `random_state` de `42` a été défini pour garantir la reproductibilité de la division des données. Cela signifie que si le code est exécuté plusieurs fois, la même répartition des données sera obtenue, ce qui est crucial pour comparer les performances des modèles de manière cohérente.
+1.  **Ingénierie des Caractéristiques (Feature Engineering)** : C'est la priorité absolue. Les caractéristiques actuelles, bien qu'encodées, manquent probablement de puissance prédictive. Il faudrait :
+    *   **Réexaminer les données brutes** : Comprendre le sens des valeurs encodées pour chaque colonne (par exemple, quelle 'Job_Title' correspond à l'encodage 0, 1, etc.) peut révéler des insights.
+    *   **Créer de nouvelles caractéristiques** : Par exemple, des interactions entre 'Industry' et 'Job_Title', ou des transformations non linéaires.
+    *   **Utiliser des encodages plus sophistiqués** : Pour les variables catégorielles, des techniques comme l'encodage One-Hot (si le nombre de catégories est gérable) ou des encodages basés sur des statistiques de la cible (`Target Encoding`) pourraient être plus efficaces que `LabelEncoder` qui impose un ordre arbitraire.
+2.  **Collecte de Données Supplémentaires** : Le R-carré très faible suggère que des informations cruciales pour la détermination du salaire sont absentes. Des variables telles que :
+    *   L'expérience professionnelle (nombre d'années)
+    *   Le niveau d'éducation (diplômes, spécialisations)
+    *   Les compétences spécifiques (technologies maîtrisées)
+    *   La taille réelle et la réputation de l'entreprise (au lieu d'un encodage arbitraire)
+    *   La performance individuelle, les responsabilités du poste
+    *   Le type de contrat (CDI, CDD, freelance) pourraient être essentielles.
+3.  **Exploration de Modèles Plus Robustes et Avancés** : Étant donné l'échec des modèles simples, il est impératif d'essayer des algorithmes capables de gérer des relations complexes et non linéaires :
+    *   **Méthodes d'Ensemble** : Random Forest, Gradient Boosting (XGBoost, LightGBM, CatBoost) sont souvent très efficaces pour les problèmes de régression.
+    *   **Réseaux de Neurones** : Pour des relations très complexes, des architectures de réseaux de neurones pourraient être envisagées.
+4.  **Optimisation et Validation Approfondies** : Si un modèle plus avancé montre un potentiel, une optimisation rigoureuse des hyperparamètres via des techniques comme la validation croisée et la recherche par grille/aléatoire (`GridSearchCV`, `RandomizedSearchCV`) sera nécessaire.
+
+## Modélisation de Régression - Linéaire Simple
+
+### Commentaires sur la Régression Linéaire Simple
+
+Les résultats obtenus avec le modèle de régression linéaire simple sont les suivants :
+
+*   **Mean Squared Error (MSE)** : 516 210 903.33
+*   **R-squared** : 0.00
+
+**Analyse :**
+
+1.  **R-carré (R-squared)** : La valeur du R-carré est de 0.00. Un R-carré proche de zéro indique que le modèle linéaire simple n'explique pratiquement aucune de la variance de la variable cible (`Salary_USD`). En d'autres termes, les caractéristiques utilisées dans ce modèle (uniquement `Job_Title` dans ce cas) ne sont pas du tout efficaces pour prédire le salaire. Le modèle est incapable de capturer les relations sous-jacentes dans les données.
+
+2.  **Mean Squared Error (MSE)** : Le MSE est de 516 210 903.33. C'est une valeur très élevée, ce qui signifie que la différence quadratique moyenne entre les salaires réels et les salaires prédits est très importante. Un MSE élevé est cohérent avec un R-carré faible et confirme que le modèle ne fournit pas de prédictions précises.
+
+3.  **Visualisation des Prédictions vs. Valeurs Réelles** : Le nuage de points généré (`Linear Regression: Actual vs. Predicted Salaries`) montre une dispersion très large et anarchique des points par rapport à la ligne de prédiction parfaite (la ligne rouge en pointillés). Idéalement, les points devraient se regrouper étroitement autour de cette ligne diagonale pour indiquer une bonne performance du modèle. Cependant, ici, les points sont éparpillés, ne formant pas de tendance claire le long de la ligne, ce qui visuellement confirme la très faible capacité prédictive du modèle.
+
+**Conclusion :**
+
+Le modèle de régression linéaire simple est inefficace pour prédire le `Salary_USD` sur cet ensemble de données en utilisant uniquement le `Job_Title` comme prédicteur. Les métriques (R-carré et MSE) et la visualisation confirment que le modèle ne parvient pas à établir une relation linéaire significative entre le titre du poste et le salaire.
+
+## Modélisation de Régression - Polynomiale
+
+### Commentaires sur la Régression Polynomiale
+
+Les résultats obtenus avec le modèle de régression polynomiale (degré 2) sont les suivants :
+
+*   **Mean Squared Error (MSE)** : 493 146 641.66
+*   **R-squared** : 0.0465
+
+**Analyse :**
+
+1.  **R-carré Très Faible :** Le R-carré de 0.0465 indique que le modèle de régression polynomiale n'explique qu'environ 4.65% de la variance des salaires (`Salary_USD`) dans le jeu de données. Cette valeur est extrêmement basse et suggère que les caractéristiques, même avec l'ajout de termes polynomiaux de degré 2, ne sont pas de bons prédicteurs des salaires. Un R-carré proche de zéro signifie que le modèle n'est pas beaucoup plus efficace que de prédire la moyenne des salaires pour toutes les observations.
+
+2.  **MSE Élevé :** Le Mean Squared Error (MSE) est très élevé (environ 493 millions). Cela confirme que la différence quadratique moyenne entre les salaires réels et les salaires prédits par le modèle est très importante. Un MSE élevé est cohérent avec un R-carré faible et indique que les prédictions du modèle sont globalement imprécises.
+
+3.  **Visualisation des Prédictions :** La visualisation des prédictions versus les valeurs réelles (le scatter plot généré précédemment) montrerait que les points sont très dispersés autour de la ligne de prédiction parfaite (la ligne rouge en pointillés). Il n'y aurait pas de regroupement clair des points le long de cette ligne diagonale, ce qui visuellement renforce la conclusion d'une performance médiocre du modèle.
+
+**Conclusion sur l'Efficacité :**
+
+L'ajout de termes polynomiaux de degré 2 à la régression n'a pas significativement amélioré la capacité de prédiction par rapport à la régression linéaire simple. En fait, le R-carré de la régression polynomiale (0.0465) est même très légèrement inférieur à celui de la régression linéaire simple (0.0519), et le MSE est légèrement supérieur. Cela suggère que les relations entre la variable `'Job_Title'` et le `Salary_USD` ne sont pas mieux capturées par une relation quadratique. Le modèle polynomial n'apporte donc pas d'amélioration notable et reste inefficace pour prédire les salaires avec cette configuration.
+
+## Modélisation de Régression - Ridge
+
+### Commentaires sur la Régression Ridge
+
+Les résultats obtenus avec le modèle de régression Ridge sont les suivants :
+
+*   **Mean Squared Error (MSE)** : 490 427 816.28
+*   **R-squared** : 0.05
+
+**Analyse :**
+
+1.  **R-carré Très Faible :** Un R-carré de 0.05 signifie que seulement environ 5% de la variance du `Salary_USD` est expliquée par les variables indépendantes incluses dans le modèle. Cela indique que le modèle de régression Ridge, malgré l'ajout de la régularisation L2, n'est pas très performant pour prédire les salaires avec les caractéristiques actuelles.
+
+2.  **MSE Élevé :** Le MSE est très élevé (plus de 490 millions), ce qui confirme que les prédictions du modèle sont, en moyenne, très éloignées des valeurs réelles. C'est cohérent avec la faible valeur du R-carré et souligne la difficulté du modèle à capturer la relation entre les caractéristiques et le salaire.
+
+3.  **Visualisation :** La visualisation des prédictions (`Ridge Regression: Actual vs. Predicted Salaries`) montre un nuage de points très dispersé autour de la ligne de prédiction parfaite (la ligne rouge en pointillés). Les points ne se regroupent pas étroitement autour de cette ligne, ce qui indique que les prédictions du modèle ne suivent pas de manière fiable les salaires réels. La régularisation n'a pas conduit à une amélioration notable de la distribution des points par rapport aux modèles linéaires précédents.
+
+**Conclusion :**
+
+Le modèle de régression Ridge, dans cette configuration et avec les caractéristiques disponibles, n'est pas efficace pour prédire le `Salary_USD`. Ses performances sont similaires à celles de la régression linéaire simple et de la régression polynomiale de degré 2, ce qui suggère que l'ajout d'une pénalité L2 n'a pas permis de résoudre les problèmes fondamentaux liés au manque de pouvoir explicatif des caractéristiques ou à la complexité de la relation à modéliser. Pour améliorer les prédictions, il serait nécessaire d'explorer une ingénierie des caractéristiques plus poussée, d'intégrer des données supplémentaires plus riches, ou d'utiliser des modèles de régression plus complexes et non linéaires.
+
+## Modélisation de Régression - Arbre de Décision
+
+### Commentaires sur la Régression par Arbre de Décision
+
+Les résultats obtenus avec le modèle de régression par arbre de décision sont les suivants :
+
+*   **Mean Squared Error (MSE)** : 868 920 848.19
+*   **R-squared** : -0.68
+
+**Analyse :**
+
+1.  **R-carré Négatif :** Un R-carré négatif est un indicateur très fort que le modèle est une très mauvaise approximation des données. Il signifie que le modèle de régression est pire que le simple fait de prédire la moyenne de la variable dépendante (`Salary_USD`) pour toutes les observations. Dans ce cas (-0.68), le modèle par arbre de décision ne parvient absolument pas à capturer la variance des salaires et fait des prédictions très éloignées de la réalité.
+
+2.  **MSE Élevé :** Le MSE est extrêmement élevé, ce qui confirme que la différence quadratique moyenne entre les valeurs réelles et prédites est très importante. Cela est cohérent avec le R-carré négatif et indique une faible précision des prédictions.
+
+3.  **Visualisation :** Le nuage de points des salaires réels versus prédits, comparé à la ligne de prédiction parfaite (rouge en pointillés), montrerait une dispersion très large et anarchique des points. On ne s'attendrait pas à voir les points se regrouper le long de la ligne diagonale, confirmant visuellement la performance médiocre du modèle.
+
+**Conclusion :**
+
+Le modèle de régression par arbre de décision, dans sa configuration par défaut ou actuelle, n'est pas du tout adapté pour prédire les salaires avec cet ensemble de données. Sa performance est même inférieure à celle d'un modèle basique qui prédirait simplement la moyenne des salaires. Cela suggère plusieurs points :
+
+*   **Complexité du problème :** La relation entre les caractéristiques disponibles et le salaire est probablement très complexe et non linéaire, et l'arbre de décision seul ne parvient pas à la modéliser.
+*   **Absence de surapprentissage :** Bien que les arbres de décision puissent facilement surapprendre, un R-carré négatif ici indique qu'il y a un fort sous-apprentissage ou que le modèle n'a pas réussi à trouver des schémas utiles.
+*   **Qualité/Quantité des données :** Comme observé avec les modèles linéaires, les caractéristiques encodées pourraient ne pas contenir suffisamment d'informations prédictives pour le salaire.
+
+**Prochaines étapes possibles :**
+
+Pour les arbres de décision, il serait essentiel d'explorer l'optimisation des hyperparamètres (comme la profondeur maximale de l'arbre, le nombre minimum d'échantillons pour diviser un nœud, etc.) pour tenter d'améliorer sa performance. Cependant, étant donné le R-carré fortement négatif, il est plus probable que ce type de modèle seul ne soit pas suffisant et que des approches plus robustes comme les méthodes d'ensemble (Random Forest, Gradient Boosting) soient nécessaires, potentiellement combinées à une meilleure ingénierie des caractéristiques.
+
 
