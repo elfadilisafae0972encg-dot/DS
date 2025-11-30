@@ -1,4 +1,4 @@
-
+#svp maitenant je dois preparer un compte rendu professionnel sur git hub sur cette base et son analyse predictive donc est ce vous pouvez me generer un code git hub correcte professionnel pour crre un bon compte rendu??
 
 [90]
 0 s
