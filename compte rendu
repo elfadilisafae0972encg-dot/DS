@@ -1,0 +1,82 @@
+## Rapport d'Analyse et de Modélisation Financière
+
+### Introduction
+**Contexte**
+Ce projet vise à analyser un ensemble de données financières provenant du New York Stock Exchange (NYSE), contenant des informations détaillées sur diverses entreprises sur plusieurs années. Le dataset comprend des indicateurs comptables, des ratios financiers et des données de performance.
+
+**Problématique**
+La prédiction des performances financières, et en particulier le bénéfice par action (Earnings Per Share - EPS), est un défi majeur pour les analystes financiers et les investisseurs. Comprendre les facteurs qui influencent l'EPS et développer un modèle prédictif fiable peut offrir des avantages stratégiques.
+
+**Objectifs**
+Les objectifs de cette analyse sont les suivants :
+1.  Effectuer un nettoyage et une préparation approfondie des données pour garantir leur qualité.
+2.  Mener une exploration des données (EDA) pour comprendre les distributions, les relations et les tendances.
+3.  Développer des modèles de régression pour prédire le 'Earnings Per Share'.
+4.  Évaluer la performance des modèles et identifier le plus performant.
+5.  Réaliser une validation croisée et préparer la phase d'optimisation des hyperparamètres.
+
+### Méthodologie
+Pour atteindre les objectifs fixés, une série d'étapes techniques a été mise en œuvre, chacune justifiée par des considérations de qualité des données et de performance du modèle.
+
+**1. Nettoyage et Préparation des Données**
+*   **Suppression de colonnes redondantes** : La colonne 'Unnamed: 0' a été supprimée car elle ne contenait qu'un index sans valeur sémantique pour l'analyse.
+*   **Conversion des types de données** : La colonne 'Period Ending' a été convertie en type `datetime` pour permettre l'extraction de caractéristiques temporelles et une manipulation aisée des dates. La colonne 'For Year' a été convertie en entier nullable (`Int64`) après avoir corrigé les valeurs aberrantes (années antérieures à 1900 remplacées par `NaN`), pour une représentation plus précise de l'année fiscale.
+*   **Gestion des doublons** : Aucune ligne dupliquée n'a été trouvée, ce qui garantit l'unicité des observations.
+*   **Imputation des valeurs manquantes** : Pour les colonnes numériques 'Cash Ratio', 'Current Ratio', 'For Year', 'Earnings Per Share' et 'Estimated Shares Outstanding', les valeurs manquantes ont été imputées par la *médiane*. Ce choix est justifié par la robustesse de la médiane aux valeurs extrêmes (outliers) souvent présentes dans les données financières, évitant ainsi de biaiser la distribution des données.
+*   **Encodage des variables catégorielles** : La colonne 'Ticker Symbol', étant la seule variable catégorielle nominale, a été transformée en utilisant le *One-Hot Encoding* via `pd.get_dummies()`. Cette méthode crée des colonnes binaires pour chaque catégorie, évitant l'introduction d'un ordre arbitraire que les modèles pourraient interpréter à tort.
+*   **Mise à l'échelle des données numériques** : L'approche de *Standardisation (Z-score scaling)*, à l'aide de `StandardScaler`, a été appliquée à toutes les colonnes numériques. Cette technique centre les données autour d'une moyenne de zéro et les met à l'échelle pour avoir une variance unitaire, ce qui est crucial pour de nombreux algorithmes d'apprentissage automatique (comme la régression linéaire et les modèles basés sur les distances) qui sont sensibles à l'échelle des caractéristiques.
+
+**2. Ingénierie des Caractéristiques (Feature Engineering)**
+*   Des caractéristiques temporelles ('Year', 'Month', 'Day', 'Quarter') ont été extraites de la colonne 'Period Ending'. Cela permet aux modèles de capturer les schémas saisonniers ou cycliques potentiellement présents dans les données financières.
+*   Une variable booléenne 'Is_End_Of_Year' a été créée pour identifier les rapports de fin d'année, qui peuvent avoir une signification particulière dans les données financières.
+
+**3. Sélection et Évaluation des Modèles**
+*   **Sélection de la variable cible** : Le 'Earnings Per Share' (EPS) a été choisi comme variable cible (`y`), étant une métrique clé de la rentabilité d'une entreprise.
+*   **Séparation des données** : Le jeu de données a été divisé en ensembles d'entraînement (80%) et de test (20%) en utilisant `train_test_split` avec un `random_state` pour assurer la reproductibilité.
+*   **Modèles de Régression** : Trois modèles de régression ont été entraînés et évalués :
+    *   **Régression Linéaire** : Un modèle de base pour établir une ligne de référence.
+    *   **Random Forest Regressor** : Un modèle d'ensemble robuste, moins sensible aux outliers et capable de gérer des relations non linéaires.
+    *   **Gradient Boosting Regressor** : Un autre modèle d'ensemble puissant, connu pour ses performances élevées et sa capacité à corriger les erreurs des arbres faibles précédents.
+*   **Validation Croisée (K-Fold)** : Une validation croisée K-Fold (5-folds) a été appliquée au Gradient Boosting Regressor pour obtenir une estimation plus robuste et fiable de sa performance, réduisant ainsi la dépendance à une seule séparation d'entraînement/test.
+
+### Résultats & Discussion
+L'évaluation des modèles a été réalisée à l'aide de trois métriques clés pour la régression : le Mean Absolute Error (MAE), le Mean Squared Error (MSE) et le coefficient de détermination R-squared (R2).
+
+| Model                       |      MAE |      MSE |   R2 Score |
+|:----------------------------|---------:|---------:|-----------:|
+| Linear Regression           | 0.35066  | 0.574765 |   0.508322 |
+| Random Forest Regressor     | 0.150015 | 0.282331 |   0.758482 |
+| Gradient Boosting Regressor | 0.205294 | 0.274554 |   0.765135 |
+
+**Analyse des Métriques :**
+*   **Régression Linéaire** : A montré une performance modérée avec un R2 de 0.5083, indiquant qu'environ 50.83% de la variance de l'EPS est expliquée par les caractéristiques du modèle.
+*   **Random Forest Regressor** : A significativement surpassé la régression linéaire avec un R2 de 0.7585. Son MAE (0.1500) est le plus bas, suggérant qu'il fait en moyenne les prédictions les plus précises.
+*   **Gradient Boosting Regressor** : A démontré la meilleure performance globale en termes de R-squared (0.7651) et de MSE (0.2746). Bien que son MAE soit légèrement supérieur à celui du Random Forest, son R2 indique une meilleure explication de la variance de la variable cible.
+
+**Validation Croisée (Gradient Boosting Regressor) :**
+Les scores R-squared obtenus par validation croisée pour le Gradient Boosting Regressor étaient les suivants :
+*   Fold 1: 0.7652
+*   Fold 2: 0.8356
+*   Fold 3: 0.7259
+*   Fold 4: 0.8480
+*   Fold 5: 0.4880
+
+La moyenne des scores R-squared sur toutes les folds est de **0.7325**, avec un écart-type de **0.1303**. L'écart-type relativement élevé indique une certaine variabilité dans la performance du modèle en fonction des sous-ensembles de données, particulièrement visible avec le score du Fold 5 qui est nettement inférieur. Cela suggère que certaines splits peuvent être plus difficiles à modéliser, ou que le modèle pourrait être sensible à la répartition des données.
+
+### Conclusion
+
+**Synthèse des Performances :**
+Le **Gradient Boosting Regressor** est apparu comme le modèle le plus performant pour prédire le 'Earnings Per Share' sur ce dataset, basé sur son score R-squared le plus élevé (0.7651) et son faible MSE. Le Random Forest Regressor est également très compétitif, en particulier avec le MAE le plus bas.
+
+**Limites du Modèle Actuel :**
+*   **Sensibilité aux données** : La variabilité des scores de validation croisée indique que le modèle pourrait être sensible à la composition spécifique des données d'entraînement, ce qui pourrait réduire sa généralisabilité à de nouvelles données.
+*   **Interprétabilité** : Les modèles d'ensemble comme le Gradient Boosting sont souvent moins interprétables que la régression linéaire, rendant difficile l'explication directe des relations entre les caractéristiques et l'EPS.
+*   **Outliers** : Bien que la mise à l'échelle et l'imputation par la médiane soient robustes, la présence persistante d'outliers (observée dans les boxplots de l'EDA) pourrait toujours affecter la performance des modèles et nécessiter une gestion plus avancée.
+*   **Hyperparamètres non optimisés** : Les modèles ont été entraînés avec des hyperparamètres par défaut (ou un `random_state`). Une optimisation rigoureuse de ceux-ci est nécessaire pour maximiser leur potentiel.
+
+**Pistes d'Amélioration :**
+*   **Optimisation des Hyperparamètres** : La prochaine étape cruciale est d'utiliser `GridSearchCV` (avec la grille de paramètres déjà définie) pour trouver la combinaison optimale d'hyperparamètres pour le Gradient Boosting Regressor, ce qui devrait améliorer sa performance et sa stabilité.
+*   **Gestion Avancée des Outliers** : Explorer des techniques plus sophistiquées de détection et de traitement des outliers (par exemple, Winsorization, transformation logarithmique) pourrait améliorer la robustesse du modèle.
+*   **Sélection de Caractéristiques** : Évaluer l'importance des caractéristiques et potentiellement réduire la dimensionalité pour éviter le surapprentissage et améliorer l'interprétabilité.
+*   **Exploration d'autres modèles** : Essayer d'autres algorithmes d'apprentissage automatique, tels que XGBoost ou LightGBM, pourrait potentiellement conduire à de meilleures performances.
+*   **Analyse Temporelle** : Étant donné la nature des données, des modèles de séries temporelles (ex: LSTM, ARIMA si les données étaient ordonnées temporellement par entreprise) pourraient être pertinents si la prédiction future de l'EPS est l'objectif principal.
