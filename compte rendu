@@ -1,1 +1,19 @@
+## Rapport d'Analyse et de Modélisation Financière
 
+### Introduction
+
+**Contexte**
+Ce projet vise à analyser un ensemble de données financières provenant du New York Stock Exchange (NYSE), contenant des informations détaillées sur diverses entreprises sur plusieurs années. Le dataset comprend des indicateurs comptables, des ratios financiers, des données de performance, et des identifiants boursiers.
+
+**Problématique**
+La prédiction des performances financières, et en particulier le bénéfice par action (Earnings Per Share - EPS), est un défi majeur pour les analystes financiers et les investisseurs. Un modèle prédictif fiable de l'EPS peut fournir des informations précieuses pour les décisions d'investissement et l'évaluation des entreprises. Le défi réside dans la grande dimensionnalité des données, la présence de valeurs manquantes, de valeurs aberrantes, et la nécessité de gérer des variables catégorielles et temporelles.
+
+**Objectifs**
+Les objectifs principaux de cette analyse sont les suivants :
+1.  **Nettoyage et Préparation des Données** : Effectuer un nettoyage et une préparation rigoureuse pour garantir la qualité, la cohérence et l'exploitabilité des données.
+2.  **Exploration des Données (EDA)** : Mener une analyse exploratoire approfondie pour comprendre les distributions des variables, identifier les relations entre elles, et détecter d'éventuels motifs ou anomalies.
+3.  **Ingénierie des Caractéristiques (Feature Engineering)** : Créer de nouvelles variables pertinentes à partir des données existantes pour enrichir le dataset et potentiellement améliorer la performance des modèles.
+4.  **Développement et Évaluation de Modèles Prédictifs** : Entraîner et évaluer plusieurs modèles de régression pour prédire le 'Earnings Per Share' (EPS), en comparant leurs performances.
+5.  **Optimisation des Hyperparamètres et Validation Robuste** : Utiliser des techniques de validation croisée et d'optimisation des hyperparamètres pour affiner le modèle le plus performant et obtenir une estimation plus fiable de sa capacité de généralisation.
+
+---
